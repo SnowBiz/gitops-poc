@@ -8,7 +8,7 @@ spec:
     elixirdemo:
       repoURL: https://github.com/SnowBiz/phoenix_helloworld.git        
       targetRevision: main
-      path: kubernetes/helm/phoenix_helloworld
+      path: kubernetes/helm
       ingress:
         enabled: true
         annotations:
