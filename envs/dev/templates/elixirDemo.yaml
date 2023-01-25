@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: elixirDemo
+  name: elixirdemo
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
@@ -11,29 +11,29 @@ spec:
     - namespace: app-sample
       server: https://kubernetes.default.svc
   sourceRepos:
-    - {{ .Values.spec.apps.elixirDemo.repoURL }}
+    - {{ .Values.spec.apps.elixirdemo.repoURL }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: elixirDemo
+  name: elixirdemo
   namespace: argocd
   labels:
     {{- toYaml .Values.labels | nindent 4 }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: elixirDemo
+  project: elixirdemo
   destination:
     namespace: app-sample
     server: {{ .Values.spec.destination.server }}
   source:
-    repoURL: {{ .Values.spec.apps.elixirDemo.repoURL }}
-    targetRevision: {{ .Values.spec.apps.elixirDemo.targetRevision }}
-    path: {{ .Values.spec.apps.elixirDemo.path }}
+    repoURL: {{ .Values.spec.apps.elixirdemo.repoURL }}
+    targetRevision: {{ .Values.spec.apps.elixirdemo.targetRevision }}
+    path: {{ .Values.spec.apps.elixirdemo.path }}
     helm:
       values: |-
-      {{ toYaml .Values.spec.apps.elixirDemo | nindent 8 }}
+      {{ toYaml .Values.spec.apps.elixirdemo | nindent 8 }}
   syncPolicy:
     automated:
       prune: true
