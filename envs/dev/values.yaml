@@ -5,7 +5,7 @@ spec:
     server: https://kubernetes.default.svc
 # All helm parameters can be sent by IaC code (Terraform or CDK)    
   apps:
-    elixirDemo:
+    elixirdemo:
       repoURL: https://github.com/SnowBiz/phoenix_helloworld.git        
       targetRevision: main
       path: kubernetes/helm/phoenix_helloworld
