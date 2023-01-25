@@ -1,0 +1,23 @@
+labels:
+  env: dev
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+# All helm parameters can be sent by IaC code (Terraform or CDK)    
+  apps:
+    elixirDemo:
+      repoURL: https://github.com/SnowBiz/phoenix_helloworld.git        
+      targetRevision: main
+      path: kubernetes/helm/phoenix_helloworld
+      ingress:
+        enabled: true
+        annotations:
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+          alb.ingress.kubernetes.io/scheme: internet-facing
+          alb.ingress.kubernetes.io/tags: Environment=dev
+          alb.ingress.kubernetes.io/target-type: ip
+        className: alb
+        hosts:
+          - paths:
+              - path: /
+                pathType: Prefix      

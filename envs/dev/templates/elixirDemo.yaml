@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: elixirDemo
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destinations:
+    - namespace: app-sample
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - {{ .Values.spec.apps.elixirDemo.repoURL }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elixirDemo
+  namespace: argocd
+  labels:
+    {{- toYaml .Values.labels | nindent 4 }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: elixirDemo
+  destination:
+    namespace: app-sample
+    server: {{ .Values.spec.destination.server }}
+  source:
+    repoURL: {{ .Values.spec.apps.elixirDemo.repoURL }}
+    targetRevision: {{ .Values.spec.apps.elixirDemo.targetRevision }}
+    path: {{ .Values.spec.apps.elixirDemo.path }}
+    helm:
+      values: |-
+      {{ toYaml .Values.spec.apps.elixirDemo | nindent 8 }}
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=false # Created with IaC - https://github.com/argoproj/argo-cd/issues/7799
